@@ -20,7 +20,10 @@ Server::Server(int port) {
 
   _server.sin_family = AF_INET;
   _server.sin_addr.s_addr = INADDR_ANY;
-  _server.sin_port = ::htons(_port);
+  // Removed global scope - no other defined and gcc 7.5.0 (perhaps due to -O3) does not strip the
+  // resolution and thus fails compilation. This may be a bug as it's standard for C code (libnet) inclusion.
+  //_server.sin_port = ::htons(_port); 
+  _server.sin_port = htons(_port); 
 
   if (::bind(_serverfd, reinterpret_cast<struct sockaddr *>(&_server),
              sizeof(_server)) < 0)

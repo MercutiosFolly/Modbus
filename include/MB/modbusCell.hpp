@@ -38,9 +38,14 @@ public:
    */
   constexpr ModbusCell(bool coil) : _value(coil){};
 
-  ModbusCell(const ModbusCell &other) noexcept = default;
-  ModbusCell &operator=(const ModbusCell &other) noexcept = default;
-  ModbusCell &operator=(ModbusCell &&other) noexcept = default;
+  // GCC 7.5.0 cannot guarantee the implicitely defined functions are noexcept and
+  // refuses to compile it: https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n4285.html
+  //ModbusCell(const ModbusCell &other) noexcept = default;
+  //ModbusCell &operator=(const ModbusCell &other) noexcept = default;
+  //ModbusCell &operator=(ModbusCell &&other) noexcept = default;
+  ModbusCell(const ModbusCell &other) = default;
+  ModbusCell &operator=(const ModbusCell &other) = default;
+  ModbusCell &operator=(ModbusCell &&other) = default;
 
   /**
    * @brief Static wrapper for cell construction.
